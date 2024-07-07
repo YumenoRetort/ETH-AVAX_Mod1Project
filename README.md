@@ -24,4 +24,4 @@ This program can be run using the website Remix linked here: https://remix.ether
 Erin Beatrice Micaela G. Reyes
 
 ## License
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/YumenoRetort/ETH-AVAX_Mod1Project/blob/main/LICENSE) file for details.
