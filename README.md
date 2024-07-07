@@ -3,7 +3,7 @@ This project contains a smart contract project that uses require(), assert(), an
 
 
 ## Description
-This project was made in compliance with the requirements for my ETH+AVAX Metacrafters course by creating a smart contract project.
+This project was made in compliance with the requirements for my ETH+AVAX Metacrafters course by creating a smart contract project that uses require(), assert(), and revert().
 
 
 ## How/where to download your program
