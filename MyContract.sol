@@ -1,45 +1,49 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.5.0 < 0.9.0;
+pragma solidity >=0.5.0 <0.9.0;
 
 contract MyContract {
-
-    mapping(address => uint256) public balances;
-    uint256 public totalSupply;
+    address public shelterOwner;
+    mapping(address => uint256) public rescues;
+    uint256 public dogs;
 
     constructor(uint256 _initialSupply) {
-        totalSupply = _initialSupply;
-        balances[msg.sender] = _initialSupply; // Assign initial supply to contract deployer
+        shelterOwner = msg.sender;
+        dogs = _initialSupply;
+        rescues[msg.sender] = _initialSupply;
     }
 
-    // Function to transfer tokens to another address
-    function transfer(address _to, uint256 _amount) public {
-        // Check if sender has enough tokens
-        require(balances[msg.sender] >= _amount, "Insufficient balance");
+    // Function to adopt dogs
+    function adopt(address _to, uint256 _dogs) public {
+        require(_to != shelterOwner, "The shelter cannot adopt dogs");
+        require(rescues[shelterOwner] >= _dogs, "There are not enough dogs to adopt");
 
-        // Check for overflow in balance calculation
-        assert(balances[_to] + _amount >= balances[_to]);
+        if(msg.sender != shelterOwner){
+            revert("You are not the shelter");
+        }
 
-        // Transfer tokens
-        balances[msg.sender] -= _amount;
-        balances[_to] += _amount;
+        assert(rescues[_to] + _dogs >= rescues[_to]);
+
+        rescues[msg.sender] -= _dogs;
+        rescues[_to] += _dogs;
+
     }
 
-    // Function to burn tokens (reduce total supply)
-    function burn(uint256 _amount) public {
-        // Check if there are enough tokens to burn
-        if(balances[msg.sender] >= _amount){
-            // Ensure total supply
-            assert(totalSupply >= _amount);
+    // Function to check if an address has adopted dogs
+    function checkDogs(address _to) public view returns (string memory) {
+        if (rescues[_to] < 1) {
+            revert ("This person has not adopted a dog");
+        } else {
+            revert ("This person has adopted a dog/dogs");
+        }
+    }
 
-            // Burn tokens
-            balances[msg.sender] -= _amount;
-            totalSupply -= _amount;
-            
-        }
-        else{
-            revert("Insufficient balance to burn");
-        }
+    // Function to return adopted dogs
+    function returnDog(uint256 _dogs) public {
+        require(msg.sender != shelterOwner, "The shelter cannot return dogs");
+        require(rescues[msg.sender] >= _dogs, "This family does not own that much dogs");
+
+        rescues[msg.sender] -= _dogs;
+        rescues[shelterOwner] += _dogs;
 
     }
 }
-
